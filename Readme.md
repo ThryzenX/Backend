@@ -12,7 +12,7 @@ We use the following branches:
 
 All development happens on feature branches and is eventually merged into `dev`, then into `main` and then to `prod`.
 
-## Getting Started
+## Getting Started 
 
 ### 1. Fork the Repository
 
