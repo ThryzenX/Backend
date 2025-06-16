@@ -1,18 +1,11 @@
 import express from 'express';
-import dotenv from 'dotenv';
-import cors from 'cors';
-import helloRoutes from './routes/hello.route';
-
-dotenv.config();
+import userRoutes from './modules/routes/user.route'; // 👈 notice: NOT the controller!
 
 const app = express();
-const PORT = process.env.PORT || 4000;
-
-app.use(cors());
 app.use(express.json());
 
-app.use('/api', helloRoutes);
+app.use('/api', userRoutes); // ✅ pass the Router, not the controller
 
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+app.listen(3000, () => {
+  console.log(`✅ Server running`);
 });
