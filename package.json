@@ -4,11 +4,12 @@
   "description": "This Backend code for our Thryzen Project",
   "main": "index.js",
   "scripts": {
+    "postinstall": "prisma generate",
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "prisma:generate": "npx prisma generate",
-    "prisma:push": "npx prisma db push",
+    "generate": "prisma generate",
+    "db:push": "prisma db push",
     "prisma:studio": "npx prisma studio"
   },
   "repository": {
@@ -39,6 +40,7 @@
     "@types/express": "^5.0.3",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^24.0.1",
+    "@types/nodemailer": "^6.4.17",
     "cross-env": "^7.0.3",
     "nodemon": "^3.1.10",
     "prisma": "^6.9.0",
