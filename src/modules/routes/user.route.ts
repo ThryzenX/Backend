@@ -1,8 +1,6 @@
 import { Router } from 'express';
-import { handleCreateUser } from '../controllers/user.controller';
-
+import { signupUserController,verifyOtpController } from '../controllers/user.controller';
 const router = Router();
-
-router.post("/user",handleCreateUser);
-
+router.post('/signup-user1', signupUserController);
+router.post('/verify-otp', verifyOtpController);
 export default router;
