@@ -6,6 +6,6 @@ app.use(express.json());
 
 app.use('/api', userRoutes); // ✅ pass the Router, not the controller
 
-app.listen(3000, () => {
-  console.log(`✅ Server running`);
+app.listen(4000, () => {
+  console.log(`✅ Server running 3000`);
 });
