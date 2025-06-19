@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { signupUserService } from '../service/user.service';
 import { getOtpByEmail,incrementOtpAttempts,deleteOtp } from '../service/otp.service';
 import { verifyUserEmail } from '../service/user.service';
-export const signupUserController = async (req: Request, res: Response) : Promise<any>  => {
+export const signupUserController = async (req: Request, res: Response) => {
   const userInput = req.body;
   try {
   const result = await signupUserService(userInput);
