@@ -16,7 +16,7 @@ export const signupUserService = async (data: {
     throw new Error('User already exists and is verified')
   }
   if (existingUser && !existingUser.isVerified) {
-    await prisma.Otp.update({
+    await prisma.otp.update({
       where: {
         email
       },
@@ -35,7 +35,7 @@ export const signupUserService = async (data: {
         type: 1, 
       }
     });
-    await prisma.Otp.create({
+    await prisma.otp.create({
       data: {
         email,
         otp,
