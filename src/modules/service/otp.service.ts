@@ -1,12 +1,12 @@
 import prisma from "../../config/prisma";
 export const getOtpByEmail = async (email: string) => {
-    return prisma.Otp.findUnique({
+    return prisma.otp.findUnique({
       where: { email },
     });
   };
   
   export const incrementOtpAttempts = async (email: string) => {
-    return prisma.Otp.update({
+    return prisma.otp.update({
       where: { email },
       data: {
         attempts: { increment: 1 },
@@ -15,7 +15,7 @@ export const getOtpByEmail = async (email: string) => {
   };
   
   export const deleteOtp = async (email: string) => {
-    return prisma.Otp.delete({
+    return prisma.otp.delete({
       where: { email },
     });
   };

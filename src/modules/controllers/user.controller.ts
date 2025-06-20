@@ -11,7 +11,7 @@ export const signupUserController = async (req: Request, res: Response) => {
   res.status(err.statusCode || 500).json({ message: err.message });
 }
 };
-export const verifyOtpController = async (req: Request, res: Response) => {
+export const verifyOtpController = async (req: Request, res: Response): Promise<any> => {
   try {
     const parsed = req.body;
     // if (!parsed.success) {
