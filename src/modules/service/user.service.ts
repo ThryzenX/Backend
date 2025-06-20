@@ -1,7 +1,6 @@
 import prisma from '../../config/prisma';
 import bcrypt from 'bcryptjs';
 import { sendOtpEmail } from '../../config/mailer';
-import { log } from 'console';
 export const signupUserService = async (data: {
   name: string;
   email: string;
