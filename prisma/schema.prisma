@@ -9,26 +9,23 @@ datasource db {
 }
 
 model User {
-  id        String @id @unique @default(uuid())
-  name      String
-  email     String  @unique
-  password  String
-  type      Int
-  isVerified Boolean @default(false) 
-  createdAt DateTime @default(now())
+  id         String   @id @unique @default(uuid())
+  name       String
+  email      String   @unique
+  password   String
+  type       Int
+  isVerified Boolean  @default(false)
+  createdAt  DateTime @default(now())
 
-  otp       Otp?    @relation("UserOtp") // Only reference relation name
+  otp        Otp?     @relation("UserOtp") 
 }
 
 model Otp {
   id         Int      @id @default(autoincrement())
-  email      String   @unique
   otp        String
   createdAt  DateTime @default(now())
   expiresAt  DateTime
   attempts   Int      @default(0)
   userId     String   @unique
-  user       User     @relation(fields: [userId], references: [id])
+  user       User     @relation("UserOtp", fields: [userId], references: [id])
 }
-
-

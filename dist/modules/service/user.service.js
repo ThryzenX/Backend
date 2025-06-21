@@ -8,48 +8,51 @@ const prisma_1 = __importDefault(require("../../config/prisma"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const mailer_1 = require("../../config/mailer");
 const signupUserService = async (data) => {
-    const { name, email, password } = data;
+    const { name, email, password, type } = data;
     const existingUser = await prisma_1.default.user.findUnique({ where: { email } });
-    const hashedPassword = await bcryptjs_1.default.hash(password, 10);
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
     if (existingUser && existingUser.isVerified) {
         throw new Error('User already exists and is verified');
     }
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
     if (existingUser && !existingUser.isVerified) {
         await prisma_1.default.otp.update({
             where: {
-                email
+                userId: existingUser.id
             },
             data: {
                 otp,
                 expiresAt
             },
         });
+        await (0, mailer_1.sendOtpEmail)(email, otp);
+        return existingUser.id;
     }
+    const hashedPassword = await bcryptjs_1.default.hash(password, 10);
     if (!existingUser) {
-        await prisma_1.default.user.create({
+        const newUser = await prisma_1.default.user.create({
             data: {
                 name,
                 email,
                 password: hashedPassword,
-                type: 1,
+                type,
             }
         });
         await prisma_1.default.otp.create({
             data: {
-                email,
+                userId: newUser.id,
                 otp,
                 expiresAt,
             }
         });
+        await (0, mailer_1.sendOtpEmail)(email, otp);
+        return newUser.id;
     }
-    await (0, mailer_1.sendOtpEmail)(email, otp);
 };
 exports.signupUserService = signupUserService;
-const verifyUserEmail = async (email) => {
+const verifyUserEmail = async (userId) => {
     return prisma_1.default.user.update({
-        where: { email },
+        where: { id: userId },
         data: { isVerified: true },
     });
 };

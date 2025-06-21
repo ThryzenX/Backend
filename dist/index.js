@@ -8,6 +8,6 @@ const user_route_1 = __importDefault(require("./modules/routes/user.route")); //
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use('/api', user_route_1.default); // ✅ pass the Router, not the controller
-app.listen(3000, () => {
-    console.log(`✅ Server running`);
+app.listen(4000, () => {
+    console.log(`✅ Server running 3000`);
 });

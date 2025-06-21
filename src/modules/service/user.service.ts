@@ -9,25 +9,27 @@ export const signupUserService = async (data: {
 }) => {
   const { name, email, password,type } = data;
   const existingUser = await prisma.user.findUnique({ where: { email } });
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const otp = Math.floor(100000 + Math.random() * 900000).toString();
-  const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
   if (existingUser && existingUser.isVerified) {
     throw new Error('User already exists and is verified')
   }
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+  const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
   if (existingUser && !existingUser.isVerified) {
     await prisma.otp.update({
       where: {
-        email
+        userId:existingUser.id
       },
       data: {
         otp,
         expiresAt
       },
     });
+    await sendOtpEmail(email, otp);
+    return existingUser.id;
   }
+  const hashedPassword = await bcrypt.hash(password, 10);
   if (!existingUser) {
-    await prisma.user.create({
+    const newUser = await prisma.user.create({
       data: {
         name,
         email,
@@ -37,18 +39,19 @@ export const signupUserService = async (data: {
     });
     await prisma.otp.create({
       data: {
-        email,
+        userId:newUser.id,
         otp,
         expiresAt,
       }
     });
-
+    await sendOtpEmail(email, otp);
+    return newUser.id;
   }
-  await sendOtpEmail(email, otp);
+  
 };
-export const verifyUserEmail = async (email: string) => {
+export const verifyUserEmail = async (userId: string) => {
   return prisma.user.update({
-    where: { email },
+    where: { id:userId },
     data: { isVerified: true },
   });
 };
