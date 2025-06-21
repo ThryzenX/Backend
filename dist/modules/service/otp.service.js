@@ -5,24 +5,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteOtp = exports.incrementOtpAttempts = exports.getOtpByEmail = void 0;
 const prisma_1 = __importDefault(require("../../config/prisma"));
-const getOtpByEmail = async (email) => {
+const getOtpByEmail = async (userId) => {
     return prisma_1.default.otp.findUnique({
-        where: { email },
+        where: { userId },
     });
 };
 exports.getOtpByEmail = getOtpByEmail;
-const incrementOtpAttempts = async (email) => {
+const incrementOtpAttempts = async (userId) => {
     return prisma_1.default.otp.update({
-        where: { email },
+        where: { userId },
         data: {
             attempts: { increment: 1 },
         },
     });
 };
 exports.incrementOtpAttempts = incrementOtpAttempts;
-const deleteOtp = async (email) => {
+const deleteOtp = async (userId) => {
     return prisma_1.default.otp.delete({
-        where: { email },
+        where: { userId },
     });
 };
 exports.deleteOtp = deleteOtp;

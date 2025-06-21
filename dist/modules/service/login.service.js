@@ -14,8 +14,7 @@ const loginService = async (email, password) => {
         return { status: 401, message: "Invalid c . redentials" };
     }
     const hashedPassword = await bcryptjs_1.default.hash(password, 10);
-    console.log(hashedPassword, " ", user.password);
-    const isPasswordValid = await bcryptjs_1.default.compare(hashedPassword, user.password);
+    const isPasswordValid = await bcryptjs_1.default.compare(password, user.password);
     if (!isPasswordValid) {
         return { status: 401, message: "Invalid credentials" };
     }
