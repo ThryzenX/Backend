@@ -5,8 +5,9 @@ export const signupUserService = async (data: {
   name: string;
   email: string;
   password: string;
+  type:number;
 }) => {
-  const { name, email, password } = data;
+  const { name, email, password,type } = data;
   const existingUser = await prisma.user.findUnique({ where: { email } });
   const hashedPassword = await bcrypt.hash(password, 10);
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
@@ -31,7 +32,7 @@ export const signupUserService = async (data: {
         name,
         email,
         password: hashedPassword,
-        type: 1, 
+        type, 
       }
     });
     await prisma.otp.create({
