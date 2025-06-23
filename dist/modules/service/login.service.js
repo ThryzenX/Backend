@@ -19,6 +19,12 @@ const loginService = async (email, password) => {
         return { status: 401, message: "Invalid credentials" };
     }
     const token = jsonwebtoken_1.default.sign({ userId: user.id, email: user.email, type: user.type }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    await prisma.token.create({
+        data: {
+            token,
+            userId: user.id,
+        },
+    });
     return { status: 200, token };
 };
 exports.loginService = loginService;

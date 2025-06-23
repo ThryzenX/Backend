@@ -16,8 +16,10 @@ model User {
   type       Int
   isVerified Boolean  @default(false)
   createdAt  DateTime @default(now())
-
+  
   otp        Otp?     @relation("UserOtp") 
+  details    UserDetails?
+  tokens     Token[]
 }
 
 model Otp {
@@ -28,4 +30,42 @@ model Otp {
   attempts   Int      @default(0)
   userId     String   @unique
   user       User     @relation("UserOtp", fields: [userId], references: [id])
+}
+
+model UserDetails {
+  id           Int         @id @default(autoincrement())
+  userId       String      @unique
+  fullName     String
+  phoneNumber  String?
+  image        String?
+  govtId       String?
+
+  user         User        @relation(fields: [userId], references: [id])
+  cities       UserCity[]
+}
+
+model City {
+  id          Int         @id @default(autoincrement())
+  name        String      @unique
+  userCities  UserCity[]
+}
+
+model UserCity {
+  id        Int       @id @default(autoincrement())
+  userDetailsId Int
+  cityId    Int
+  order     Int      
+
+  userDetails UserDetails @relation(fields: [userDetailsId], references: [id])
+  city        City        @relation(fields: [cityId], references: [id])
+
+  @@unique([userDetailsId, cityId])
+}
+model Token {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  createdAt DateTime @default(now())
+
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

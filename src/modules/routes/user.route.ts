@@ -1,8 +1,11 @@
 import { Router } from 'express';
-import { signupUserController,verifyOtpController } from '../controllers/user.controller';
+import express from 'express';
+import { signupUserController,verifyOtpController,addUserDetailsController } from '../controllers/user.controller';
 import { loginController } from '../controllers/auth.controller';
-const router = Router();
+import { verifyToken } from '../validators/verifyToken';
+const router = express.Router();
 router.post('/signup-user1', signupUserController);
 router.post('/verify-otp', verifyOtpController);
 router.post('/login',loginController);
+router.post('/add-user-detail',verifyToken,addUserDetailsController);
 export default router;

@@ -20,6 +20,11 @@ export const loginService = async (email: string, password: string) => {
     process.env.JWT_SECRET!,
     { expiresIn: "1h" }
   );
-
+  await prisma.token.create({
+    data: {
+      token,
+      userId: user.id,
+    },
+  });
   return { status: 200, token };
 };
